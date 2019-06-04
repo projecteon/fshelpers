@@ -1,10 +1,10 @@
-﻿/// A simple debouncer for Elmish that sends output only after a configurable delay since the last input.
+/// A simple debouncer for Elmish that sends output only after a configurable delay since the last input.
 /// For example, this can be used on a search input field where search results are fetched automtically,
 /// but only when the user has stopped typing for x milliseconds.
 [<RequireQualifiedAccess>]
 module Elmish.Debounce
 
-open Fable.PowerPack
+//open Fable.PowerPack
 open System
 
 type Model<'a> =
@@ -26,7 +26,7 @@ type Msg<'a> =
     | Output of 'a
 
 let private delayCmd (delay:TimeSpan) msg =
-    Cmd.ofPromise (fun () -> promise { do! Promise.sleep (int delay.TotalMilliseconds) }) () (fun () -> msg) (fun _ -> msg)
+    Cmd.OfPromise.either (fun () -> promise { do! Promise.sleep (int delay.TotalMilliseconds) }) () (fun () -> msg) (fun _ -> msg)
 
 let private updateInternal msg model : Model<'a> * Cmd<Msg<'a>> =
     match msg with
